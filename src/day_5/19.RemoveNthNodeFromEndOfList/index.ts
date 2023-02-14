@@ -2,6 +2,7 @@
 class ListNode {
   val: number;
   next: ListNode | null;
+
   constructor(val?: number, next?: ListNode | null) {
     this.val = val === undefined ? 0 : val;
     this.next = next === undefined ? null : next;
@@ -9,13 +10,24 @@ class ListNode {
 }
 
 export function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
-  let copy = head;
+  let fast = head;
+  let slow = head;
 
-  for (let i = 0; i < n; i++) {
-    copy = copy ? copy.next : null;
+  while (n >= 1) {
+    fast = fast?.next ?? null;
+    n--;
   }
 
-  // TODO
+  if (fast === null) {
+    head = head?.next ?? null;
+  } else {
+    while (fast.next !== null) {
+      slow = slow?.next ?? null;
+      fast = fast.next;
+    }
 
-  return null;
+    (slow as ListNode).next = slow?.next?.next ?? null;
+  }
+
+  return head;
 }
